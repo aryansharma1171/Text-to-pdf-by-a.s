@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to PDF Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0d0d0d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: auto;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 5px 5px 15px rgba(255, 255, 255, 0.1), 
+                        -5px -5px 15px rgba(0, 0, 0, 0.8);
+        }
+        h2 {
+            font-size: 24px;
+            color: white;
+        }
+        textarea {
+            width: 100%;
+            height: 500px;
+            background: #121212;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.6), 
+                        inset -5px -5px 10px rgba(255, 255, 255, 0.05);
+            resize: none;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: linear-gradient(145deg, #282828, #0f0f0f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 5px 5px 15px rgba(255, 255, 255, 0.1), 
+                        -5px -5px 15px rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(145deg, #0f0f0f, #282828);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Text to PDF Converter by A.S</h2>
+        <textarea id="textInput" placeholder="Type your text here..."></textarea><br>
+        <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let text = document.getElementById("textInput").value;
+            if (text.trim() === "") {
+                alert("Please enter some text before downloading the PDF.");
+                return;
+            }
+
+            let margin = 10; 
+            let maxWidth = 180; 
+            let yPosition = 20; 
+
+            // **Updated Heading inside PDF**
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text("Text to PDF Converter by A.S", margin, yPosition);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(14);
+            doc.text(text, margin, yPosition + 15, { maxWidth: maxWidth });
+
+            doc.save("download.pdf");
+        }
+    </script>
+
+</body>
+</html>
