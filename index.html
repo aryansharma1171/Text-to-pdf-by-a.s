@@ -3,95 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to PDF Converter</title>
+    <title>Professional Text to PDF | Aryan Sharma</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #0d0d0d;
-            color: white;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .container {
-            width: 90%;
-            max-width: 700px;
-            margin: auto;
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 5px 5px 15px rgba(255, 255, 255, 0.1), 
-                        -5px -5px 15px rgba(0, 0, 0, 0.8);
-        }
-        h2 {
-            font-size: 24px;
-            color: white;
-        }
-        textarea {
+
+        /* --- Header Section --- */
+        .header-wrapper {
             width: 100%;
-            height: 500px;
-            background: #121212;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            border-radius: 10px;
-            box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.6), 
-                        inset -5px -5px 10px rgba(255, 255, 255, 0.05);
-            resize: none;
+            max-width: 1600px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        button {
-            margin-top: 15px;
-            padding: 12px 25px;
-            font-size: 18px;
-            background: linear-gradient(145deg, #282828, #0f0f0f);
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .header-left h1 span { color: var(--primary); }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .support-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .support-link:hover { color: var(--primary); }
+
+        .author-badge {
+            background: rgba(255,255,255,0.05);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Main Editor Container --- */
+        .editor-container {
+            width: 100%;
+            max-width: 1600px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- Top Toolbar (Labels Removed) --- */
+        .editor-toolbar {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end; /* Pushes button to right */
+            align-items: center;
+        }
+
+        .btn-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary);
             color: white;
             border: none;
+            padding: 8px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 5px 5px 15px rgba(255, 255, 255, 0.1), 
-                        -5px -5px 15px rgba(0, 0, 0, 0.8);
-            transition: 0.3s;
+            transition: all 0.2s ease;
         }
-        button:hover {
-            background: linear-gradient(145deg, #0f0f0f, #282828);
-            transform: scale(1.05);
+
+        .btn-export:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+
+        /* --- Text Area --- */
+        textarea {
+            width: 100%;
+            height: 72vh;
+            background: transparent;
+            color: var(--text-main);
+            border: none;
+            padding: 2.5rem;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            outline: none;
+        }
+
+        textarea::placeholder {
+            color: #475569;
+        }
+
+        /* --- Footer Stats --- */
+        .editor-footer {
+            padding: 0.75rem 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .stats-group {
+            display: flex;
+            gap: 25px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .stats-group b { color: var(--text-main); font-weight: 600; }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header-wrapper { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .header-right { flex-direction: row-reverse; justify-content: space-between; width: 100%; }
+            textarea { height: 60vh; padding: 1.5rem; }
+            .btn-export { padding: 8px 16px; font-size: 0.85rem; width: 100%; justify-content: center; }
+        }
+
+        /* Toast Message */
+        #toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--danger);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+        #toast.active { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Text to PDF Converter by A.S</h2>
-        <textarea id="textInput" placeholder="Type your text here..."></textarea><br>
-        <button onclick="downloadPDF()">Download PDF</button>
+    <div class="header-wrapper">
+        <div class="header-left">
+            <h1>Text to <span>PDF</span></h1>
+        </div>
+        <div class="header-right">
+            <a href="mailto:etho98g@gmail.com" class="support-link">
+                <i class="far fa-envelope"></i> Support
+            </a>
+            <div class="author-badge">Built by Aryan Sharma</div>
+        </div>
     </div>
 
+    <div class="editor-container">
+        <div class="editor-toolbar">
+            <button class="btn-export" onclick="exportPDF()">
+                <i class="fas fa-file-pdf"></i> Download PDF
+            </button>
+        </div>
+        
+        <textarea id="textInput" placeholder="Start typing your document content here..." oninput="updateStats()"></textarea>
+        
+        <div class="editor-footer">
+            <div class="stats-group">
+                <div>Words: <b id="wordCount">0</b></div>
+                <div>Characters: <b id="charCount">0</b></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">Please enter some text before downloading.</div>
+
     <script>
-        function downloadPDF() {
+        function updateStats() {
+            const val = document.getElementById("textInput").value.trim();
+            const words = val ? val.split(/\s+/).length : 0;
+            const chars = val.length;
+            document.getElementById("wordCount").innerText = words;
+            document.getElementById("charCount").innerText = chars;
+        }
+
+        function showToast() {
+            const t = document.getElementById("toast");
+            t.className = "active";
+            setTimeout(() => { t.className = ""; }, 3000);
+        }
+
+        function exportPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
+            const content = document.getElementById("textInput").value;
             
-            let text = document.getElementById("textInput").value;
-            if (text.trim() === "") {
-                alert("Please enter some text before downloading the PDF.");
+            if (!content.trim()) {
+                showToast();
                 return;
             }
 
-            let margin = 10; 
-            let maxWidth = 180; 
-            let yPosition = 20; 
-
-            // **Updated Heading inside PDF**
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
-            doc.text("Text to PDF Converter by A.S", margin, yPosition);
+            const margin = 20; 
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const maxWidth = pageWidth - (margin * 2);
+            let y = margin;
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(14);
-            doc.text(text, margin, yPosition + 15, { maxWidth: maxWidth });
+            doc.setFontSize(11);
+            doc.setTextColor(40, 40, 40);
 
-            doc.save("download.pdf");
+            const lines = doc.splitTextToSize(content, maxWidth);
+
+            for (let i = 0; i < lines.length; i++) {
+                if (y > pageHeight - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+                doc.text(lines[i], margin, y);
+                y += 7;
+            }
+
+            doc.save("Document_Export.pdf");
         }
     </script>
 
